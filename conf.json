@@ -1,0 +1,6 @@
+{
+    "less-files" : [
+            "test/less/*.less"
+        ],
+    "report-file" : "build/report"
+}

@@ -1,0 +1,1 @@
+require('../src').analyze(process.cwd() + '/conf.json');
