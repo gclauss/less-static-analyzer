@@ -1,7 +1,7 @@
 exports.createFileAdapter = function(handleErrors){
     
     var fs = require('fs');
-    var glob  = require('glob');
+    var glob = require('glob');
     
     var self = {};
     
@@ -12,6 +12,24 @@ exports.createFileAdapter = function(handleErrors){
                 return;
             }
             listener(data);
+        });
+    }
+    
+    self.readGlobFiles = function(globPatterns, listener) {
+        var result = [];
+        var readCount = 0;
+        globPatterns.forEach(function(globPattern) {
+            glob(globPattern, function (err, files) {
+                if(err !== null) {
+                    handleErrors(err);
+                    return;
+                }
+                result = result.concat(files);
+                readCount++;
+                if(readCount === globPatterns.length) {
+                    listener(result);
+                }
+            });
         });
     }
     

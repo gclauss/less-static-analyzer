@@ -4,7 +4,10 @@ exports.analyze = function(configurationFile) {
         console.log(err);
     });
     fileAdapter.readFile(configurationFile, function(data) {
-        console.log('readResult');
-        console.log(data);
+        var configuration = JSON.parse(data);
+        fileAdapter.readGlobFiles(configuration.lessFiles, function(files) {
+            console.log('readResult');
+            console.log(files.length);
+        });
     });
 }
