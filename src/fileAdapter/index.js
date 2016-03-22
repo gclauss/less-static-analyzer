@@ -15,6 +15,19 @@ exports.createFileAdapter = function(handleErrors){
         });
     }
     
+    self.readFiles = function(paths, listener) {
+        var result = [];
+        var readCount = 0;
+        paths.forEach(function(path) {
+            self.readFile(path, function(data) {
+                result.push(data);
+                readCount++;
+                if(readCount !== paths.length)  return;
+                listener(result);
+            })
+        });
+    }
+    
     self.readGlobFiles = function(globPatterns, listener) {
         var result = [];
         var readCount = 0;
@@ -26,9 +39,8 @@ exports.createFileAdapter = function(handleErrors){
                 }
                 result = result.concat(files);
                 readCount++;
-                if(readCount === globPatterns.length) {
-                    listener(result);
-                }
+                if(readCount !== globPatterns.length) return;
+                self.readFiles(result, listener);
             });
         });
     }
